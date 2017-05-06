@@ -1,0 +1,17 @@
+{
+  "name": "15-puzzle",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Georgy Bunin <bunin.co.il@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "15-puzzle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "rimraf dist && NODE_ENV=production webpack -p --config webpack.config.js --progress"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-angularjs-annotate": "^0.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.28.1",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.11.1",
+    "lodash": "^4.17.4",
+    "node-sass": "^4.5.2",
+    "rimraf": "^2.6.1",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.17.0",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.5.0",
+    "webpack-dev-server": "^2.4.5"
+  },
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-foundation": "^0.8.0",
+    "angular-hammer": "^2.2.0",
+    "angular-route": "^1.6.4",
+    "font-awesome": "^4.7.0",
+    "foundation": "^4.2.1-1",
+    "ngstorage": "^0.3.11"
+  }
+}

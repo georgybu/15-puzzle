@@ -1,0 +1,93 @@
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome.scss";
+@import "~foundation/scss/normalize.scss";
+@import "~foundation/scss/foundation.scss";
+
+// foundation animation instead of angular animate
+// ----------------------------------------------------------------------------
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity .15s linear;
+  transition: opacity .15s linear;
+}
+
+.fade.in {
+  opacity: 1;
+}
+
+.reveal-modal.fade {
+  -webkit-transition: -webkit-transform .3s ease-out;
+  -moz-transition: -moz-transform .3s ease-out;
+  -o-transition: -o-transform .3s ease-out;
+  transition: transform .3s ease-out;
+  -webkit-transform: translate(0, -25%);
+  -ms-transform: translate(0, -25%);
+  transform: translate(0, -25%);
+}
+
+.reveal-modal.in {
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+
+.reveal-modal-bg.fade {
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+
+.reveal-modal-bg.in {
+  filter: alpha(opacity=50);
+  opacity: .5;
+}
+// ----------------------------------------------------------------------------
+
+$boardSize: 480px;
+
+.settings {
+  .dimension-preview {
+    canvas {
+      width: $boardSize;
+      height: $boardSize;
+      margin: 0 auto;
+      display: block;
+    }
+  }
+
+  .dimension-preview-loader {
+    text-align: center;
+  }
+
+  h2 .fa {
+    min-width: 32px;
+  }
+}
+
+.game {
+  .game-board {
+    width: $boardSize;
+    height: $boardSize;
+    margin: 0 auto;
+    position: relative;
+
+    .tile {
+      position: absolute;
+      transition: all 0.2s ease-out;
+      cursor: pointer;
+
+      &.empty {
+        z-index: -1;
+      }
+    }
+  }
+}
+
+.author {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border: 1px solid lightgray;
+  background-color: whitesmoke;
+  margin: 10px;
+  padding: 10px;
+}
