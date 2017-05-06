@@ -1,7 +1,23 @@
+Demo
+====
+
+https://georgybu.github.io/15-puzzle/
+
 Local server
 ============
 
+Start
+````
+npm i
+npm start
+````
+
 http://localhost:8080/
+
+Build
+```
+npm run build
+```
 
 Webpack configuration
 =====================
