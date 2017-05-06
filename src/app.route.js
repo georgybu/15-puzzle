@@ -3,6 +3,7 @@ export default  function routeConfig($locationProvider, $routeProvider) {
     .when('/game', {template: '<game></game>'})
     .when('/leaders', {template: '<leaders></leaders>'})
     .when('/settings', {template: '<settings></settings>'})
+    .when('/help', {template: '<help></help>'})
     .otherwise('/game');
   $locationProvider.hashPrefix('');
 }

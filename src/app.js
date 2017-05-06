@@ -24,6 +24,7 @@ import header  from './components/header';
 import game    from './components/game';
 import leaders from './components/leaders';
 import settings from './components/settings';
+import help from './components/help';
 
 import './app.scss';
 
@@ -37,6 +38,7 @@ angular.module('game', [ngRoute, hmTouchEvents, 'ngStorage', 'mm.foundation'])
   .component('header', header)
   .component('game', game)
   .component('leaders', leaders)
-  .component('settings', settings);
+  .component('settings', settings)
+  .component('help', help);
 
 angular.bootstrap(document, ['game']);
