@@ -82,6 +82,15 @@ $boardSize: 480px;
   }
 }
 
+.leaders {
+  .unstyled-list {
+    margin: 0;
+    li {
+      list-style: none;
+    }
+  }
+}
+
 .author {
   position: fixed;
   bottom: 0;
