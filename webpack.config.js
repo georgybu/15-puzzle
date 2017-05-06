@@ -15,7 +15,7 @@ const config = {
       'ngstorage/ngStorage.min'
     ],
   },
-  output: {path: __dirname + '/dist', filename: 'app.js'},
+  output: {path: __dirname + '/docs', filename: 'app.js'},
   module: {
     rules: [
       {test: /\.js$/, loader: 'babel-loader', query: {presets: ["babel-preset-es2015"]}},
@@ -30,8 +30,8 @@ const config = {
     new ExtractTextPlugin({filename: '[name].css', allChunks: true}),
     new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.js'}),
     new CopyWebpackPlugin([
-      {from: 'index.html', to: '../dist/index.html'},
-      {from: 'images/**/*', to: '../dist/'},
+      {from: 'index.html', to: '../docs/index.html'},
+      {from: 'images/**/*', to: '../docs/'},
     ])
   ],
   devServer: {open: true, contentBase: __dirname + '/src'},

@@ -19,6 +19,8 @@ Build
 npm run build
 ```
 
+Used `docs` folder instead of `dist` for easy github deployment
+
 Webpack configuration
 =====================
 
