@@ -4,7 +4,7 @@ const getImage = ($q) => {
   img.onload = function () {
     deferred.resolve(this);
   };
-  img.src = '/images/nature.jpg';
+  img.src = 'images/nature.jpg';
   return deferred.promise;
 };
 
