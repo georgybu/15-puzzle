@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "rimraf dist && NODE_ENV=production webpack -p --config webpack.config.js --progress"
+    "build": "rimraf docs && NODE_ENV=production webpack -p --config webpack.config.js --progress"
   },
   "keywords": [],
   "author": "",
