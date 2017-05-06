@@ -78,7 +78,7 @@ const game = {
     };
     
     startGame() {
-      const pseudoShuffle = true;
+      const pseudoShuffle = false;
       
       if (pseudoShuffle) {
         this.swapTiles(
