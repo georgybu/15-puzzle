@@ -4,7 +4,7 @@ const settings = {
       <div class="small-12 columns">
         <h1>Settings</h1>
         <hr />
-        <div class="dimension-preview" ng-if="!$ctrl.isLoading">
+        <div class="dimension-preview" ng-if="!$ctrl.isLoading" ng-resize="$ctrl.setDimensions($event)">
             <canvas></canvas>
         </div>
         <div class="dimension-preview-loader" ng-if="$ctrl.isLoading">
@@ -54,6 +54,9 @@ const settings = {
       this._showNumber = this.$storage.showNumber;
       this._highlightRightPlace = this.$storage.highlightRightPlace;
       this.updateDimensionPreview();
+      this.$timeout(() => {
+        this.setDimensions();
+      }, 0);
     };
     
     get highlightRightPlace() {
@@ -76,22 +79,32 @@ const settings = {
       this.updateDimensionPreview();
     }
     
+    setDimensions() {
+      const gameBoard = document.getElementsByClassName('dimension-preview')[0];
+      if (gameBoard) {
+        gameBoard.style.height = (gameBoard.offsetWidth + 10) + 'px';
+        this.boardSize = gameBoard.offsetWidth;
+        this.updateDimensionPreview();
+      }
+    }
+    
     updateDimensionPreview() {
       this.isLoading = true;
       this.$storage.dimension = this.dimension;
       this.scramble.generate(this.dimension, this._showNumber, this._highlightRightPlace)
-        .then((ctx) => {
+        .then((data) => {
           this.isLoading = false;
           return this.$timeout(() => {
-            return ctx;
+            return data;
           }, 0);
-        }).then((ctx) => {
+        }).then((imageData) => {
           let canvas = this.$element.find('canvas')[0];
           let context = canvas.getContext('2d');
           canvas.width = this.boardSize;
           canvas.height = this.boardSize;
           context.clearRect(0, 0, canvas.width, canvas.height);
-          context.putImageData(ctx.getImageData(0, 0, canvas.width, canvas.height), 0, 0);
+          context.drawImage(imageData, 0, 0, imageData.width, imageData.height, 0, 0, canvas.width, canvas.height);
+          
         }
       );
     }

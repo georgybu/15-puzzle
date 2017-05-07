@@ -35,6 +35,7 @@
     "angular-route": "^1.6.4",
     "font-awesome": "^4.7.0",
     "foundation": "^4.2.1-1",
+    "ng-resize": "^1.3.0",
     "ngstorage": "^0.3.11"
   }
 }

@@ -6,15 +6,13 @@ const game = {
         <div class="small-12 columns">
           <h1>Game</h1>
           <hr />
-          <div class="game-board" hm-panend="$ctrl.onPan($event)">
+          <div class="game-board" hm-panend="$ctrl.onPan($event)" ng-resize="$ctrl.setDimensions($event)">
             <div class="tile" ng-repeat="tile in $ctrl.tiles track by $index"
               ng-style="{ transform: $ctrl.getTilePosition(tile) }"
               ng-class="{ empty: tile.canvas === null }"
               ng-click="$ctrl.moveByClick(tile)">
-              <!--hm-tap="$ctrl.moveByTap(tile)"-->
               <img ng-src="{{ $ctrl.scramble.getImageFromTile(tile)}}"
-                   ng-style="{ width: $ctrl.tileSize, height: $ctrl.tileSize }">
-                   <!--<pre>{{ {x: tile.position_x, y:tile.position_y, s:$ctrl.tileSize} | json }}</pre>-->
+                ng-style="{ 'width': $ctrl.tileSize + 'px', 'height': $ctrl.tileSize + 'px'}"/>
             </div>
           </div>
         </div>
@@ -41,22 +39,7 @@ const game = {
         </div>
       </div>
       
-      <div class="row" ng-if="false">
-        <div class="small-12 columns">
-          <p class="panel">
-            <ul>
-              <li class="visible-for-small-only">This text is shown only on a small screen.</li>
-              <!--<li class="visible-for-medium-up">This text is shown on medium screens and up.</li>-->
-              <li class="visible-for-medium-only">This text is shown only on a medium screen.</li>
-              <!--<li class="visible-for-large-up">This text is shown on large screens and up.</li>-->
-              <li class="visible-for-large-only">This text is shown only on a large screen.</li>
-              <!--<li class="visible-for-xlarge-up">This text is shown on xlarge screens and up.</li>-->
-              <li class="visible-for-xlarge-only">This text is shown only on an xlarge screen.</li>
-              <!--<li class="visible-for-xxlarge-up">This text is shown on xxlarge screens and up.</li>-->
-            </ul>
-          </p>
-        </div>
-      </div>
+      
     </div>
 	`,
   
@@ -87,11 +70,12 @@ const game = {
         });
       });
       this.$document.on('keydown', this.keyDownHandler(this));
-      this.emptyBlock = null;
+      this.setDimensions();
     }
     
     $onDestroy() {
       this.$document.off('keydown', this.keyDownHandler(this));
+      this.$document.unbind('keydown');
       this.stat.stopGame();
     };
     
@@ -115,7 +99,6 @@ const game = {
         });
       }
       
-      this.emptyBlock = this.tiles.find((tile) => tile.canvas === null);
       this.stat.startGame();
     }
     
@@ -126,6 +109,12 @@ const game = {
       }
       
       this.stat.stopGame();
+    }
+  
+    setDimensions() {
+      const gameBoard = document.getElementsByClassName('game-board')[0];
+      this.tileSize = Math.floor((gameBoard.offsetWidth) / this.$storage.dimension);
+      gameBoard.style.height = gameBoard.offsetWidth + 'px';
     }
     
     swapTiles(t1, t2) {
@@ -152,7 +141,7 @@ const game = {
         return;
       }
       
-      let emptyBlock = this.emptyBlock;
+      let emptyBlock = this.tiles.find((tile) => tile.canvas === null);
       if (emptyBlock) {
         const XDistance = emptyBlock.position_x - tile.position_x;
         const YDistance = emptyBlock.position_y - tile.position_y;
@@ -174,7 +163,7 @@ const game = {
         return;
       }
       
-      let emptyBlock = this.emptyBlock;
+      let emptyBlock = this.tiles.find((tile) => tile.canvas === null);
       let target = {x: emptyBlock.position_x, y: emptyBlock.position_y};
       if (emptyBlock) {
         switch (direction) {

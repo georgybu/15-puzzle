@@ -6,8 +6,9 @@ import ngRoute from 'angular-route';
 import hmTouchEvents from 'angular-hammer';
 
 // vendors
-import 'angular-foundation/mm-foundation-tpls.js';
+import 'angular-foundation/mm-foundation-tpls.min';
 import 'ngstorage/ngStorage.min';
+import 'ng-resize/dist/ng-resize.min';
 
 // config
 import RouteConfig from './app.route';
@@ -28,7 +29,7 @@ import help from './components/help';
 
 import './app.scss';
 
-angular.module('game', [ngRoute, hmTouchEvents, 'ngStorage', 'mm.foundation'])
+angular.module('game', [ngRoute, hmTouchEvents, 'ngStorage', 'ngResize', 'mm.foundation'])
   .config(RouteConfig)
   .service('scramble', scramble)
   .service('storage', storage)

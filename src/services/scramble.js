@@ -96,35 +96,50 @@ export default class scramble {
     return tileCanvas;
   };
   
-  getImageFromTile(tile) {
+  getCachedImageFromTile(tile, cacheName) {
     if (tile.canvas) {
       const margin = 3;
       const w = tile.canvas.width;
       const h = tile.canvas.height;
+      const fontSize = (this.maxFontSize / this.$storage.dimension) * 2;
+      const centerX = (w / 2);
+      const centerY = (h / 2) + (fontSize / 2);
+      const num = ((tile.y * this.$storage.dimension) + tile.x) + 1;
       
       let canvas = document.createElement("canvas");
       let ctx = canvas.getContext('2d');
       
       canvas.width = w;
       canvas.height = h;
+      
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(tile.canvas, 0, 0, w, h, 0, 0, w, h);
       
-      if (this.$storage.highlightRightPlace) {
-        const equalX = tile.x === tile.position_x;
-        const equalY = tile.y === tile.position_y;
-        ctx.strokeStyle = (equalX && equalY) ? 'green' : 'red';
-        ctx.strokeRect(margin, margin, w - (margin * 2), h - (margin * 2));
-      } else {
-        ctx.strokeStyle = 'black';
-      }
-      
-      if (this.$storage.showNumber) {
-        const fontSize = (this.maxFontSize / this.$storage.dimension) * 2;
-        const centerX = (w / 2);
-        const centerY = (h / 2) + (fontSize / 2);
-        const num = ((tile.y * this.$storage.dimension) + tile.x) + 1;
-        this.drawNumber(ctx, fontSize, num, centerX, centerY);
+      switch (cacheName) {
+        case 'blank':
+          break;
+        case 'blankNumber':
+          ctx.strokeStyle = 'black';
+          this.drawNumber(ctx, fontSize, num, centerX, centerY);
+          break;
+        case 'blankNumberBorderFail':
+          ctx.strokeStyle = 'red';
+          ctx.strokeRect(margin, margin, w - (margin * 2), h - (margin * 2));
+          this.drawNumber(ctx, fontSize, num, centerX, centerY);
+          break;
+        case 'blankNumberBorderSuccess':
+          ctx.strokeStyle = 'green';
+          ctx.strokeRect(margin, margin, w - (margin * 2), h - (margin * 2));
+          this.drawNumber(ctx, fontSize, num, centerX, centerY);
+          break;
+        case 'blankBorderFail':
+          ctx.strokeStyle = 'red';
+          ctx.strokeRect(margin, margin, w - (margin * 2), h - (margin * 2));
+          break;
+        case 'blankBorderSuccess':
+          ctx.strokeStyle = 'green';
+          ctx.strokeRect(margin, margin, w - (margin * 2), h - (margin * 2));
+          break;
       }
       
       return canvas.toDataURL();
@@ -133,7 +148,32 @@ export default class scramble {
     }
   }
   
+  getImageFromTile(tile) {
+    let key = 'blank';
+    if (this.$storage.showNumber) {
+      key += 'Number';
+    }
+    if (this.$storage.highlightRightPlace) {
+      key += 'Border';
+      if (tile.position_x === tile.x && tile.position_y === tile.y) {
+        key += 'Success';
+      } else {
+        key += 'Fail';
+      }
+    }
+    return tile.cache[key];
+  }
+  
   generate(dimension = 4, showNumber = true, highlightRightPlace = true) {
+    const cacheKeys = [
+      'blank',
+      'blankNumber',
+      'blankNumberBorderFail',
+      'blankNumberBorderSuccess',
+      'blankBorderFail',
+      'blankBorderSuccess'
+    ];
+    
     return this.imagePromise().then((img) => {
         this.tiles = [];
         
@@ -152,10 +192,16 @@ export default class scramble {
         for (let i = 0; i < dimension; i++) {
           for (let j = 0; j < dimension; j++) {
             if (i === dimension - 1 && j === dimension - 1) {
-              this.tiles.push({x: i, y: j, canvas: null});
+              this.tiles.push({x: i, y: j, canvas: null, cache: cacheKeys.map(() => null)});
               continue;
             }
-            this.tiles.push({x: i, y: j, canvas: this.getTileAsCanvas(img, i, j, tileSize, ratio, margin)});
+            
+            let tile = {x: i, y: j, canvas: this.getTileAsCanvas(img, i, j, tileSize, ratio, margin), cache: {}};
+            cacheKeys.map((key) => {
+              tile.cache[key] = this.getCachedImageFromTile(tile, key);
+            });
+            this.tiles.push(tile);
+            
             this.drawImagePart(ctx, img, i, j, tileSize, ratio, margin);
             if (highlightRightPlace) {
               ctx.strokeStyle = (Math.random() > 0.5) ? 'red' : 'green';
@@ -172,8 +218,9 @@ export default class scramble {
             }
           }
         }
-        
-        return ctx;
+  
+        //return ctx.getImageData(0, 0, canvas.width, canvas.height);
+        return canvas;
       }
     );
   }

@@ -46,11 +46,13 @@ $boardSize: 480px;
 
 .settings {
   .dimension-preview {
+    width: $boardSize;
+    height: $boardSize;
+    margin: 0 auto;
+
     canvas {
-      width: $boardSize;
-      height: $boardSize;
-      margin: 0 auto;
       display: block;
+      margin: 0;
     }
   }
 
@@ -106,14 +108,38 @@ $boardSize: 480px;
 // http://foundation.zurb.com/sites/docs/v/5.5.3/media-queries.html
 
 // Small screens
-@media only screen { } /* Define mobile styles */
+@media only screen {  } /* Define mobile styles */
 
-@media only screen and (max-width: 40em) { } /* max-width 640px, mobile-only styles, use when QAing mobile issues */
+@media only screen and (max-width: 40em) {
+
+  .game .game-board {
+    width: 100%;
+    height: auto;
+    min-height: 1px;
+  }
+
+  .settings .dimension-preview {
+    width: 100%;
+  }
+
+} /* max-width 640px, mobile-only styles, use when QAing mobile issues */
 
 // Medium screens
 @media only screen and (min-width: 40.063em) { } /* min-width 641px, medium screens */
 
-@media only screen and (min-width: 40.063em) and (max-width: 64em) { } /* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+
+  .game .game-board {
+    width: 100%;
+    height: auto;
+    min-height: 1px;
+  }
+
+  .settings .dimension-preview {
+    width: 100%;
+  }
+
+} /* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
 
 // Large screens
 @media only screen and (min-width: 64.063em) { } /* min-width 1025px, large screens */

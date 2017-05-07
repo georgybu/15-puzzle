@@ -11,8 +11,9 @@ const config = {
       'angular',
       'angular-route',
       'angular-hammer',
-      'angular-foundation/mm-foundation-tpls.js',
-      'ngstorage/ngStorage.min'
+      'angular-foundation/mm-foundation-tpls.min',
+      'ngstorage/ngStorage.min',
+      'ng-resize/dist/ng-resize.min'
     ],
   },
   output: {path: __dirname + '/docs', filename: 'app.js'},
