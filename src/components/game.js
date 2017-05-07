@@ -8,12 +8,13 @@ const game = {
           <hr />
           <div class="game-board" hm-panend="$ctrl.onPan($event)">
             <div class="tile" ng-repeat="tile in $ctrl.tiles track by $index"
-              ng-style="{ top: tile.position_y * $ctrl.tileSize + 'px', left: tile.position_x * $ctrl.tileSize + 'px' }"
+              ng-style="{ transform: $ctrl.getTilePosition(tile) }"
               ng-class="{ empty: tile.canvas === null }"
               ng-click="$ctrl.moveByClick(tile)">
               <!--hm-tap="$ctrl.moveByTap(tile)"-->
               <img ng-src="{{ $ctrl.scramble.getImageFromTile(tile)}}"
                    ng-style="{ width: $ctrl.tileSize, height: $ctrl.tileSize }">
+                   <!--<pre>{{ {x: tile.position_x, y:tile.position_y, s:$ctrl.tileSize} | json }}</pre>-->
             </div>
           </div>
         </div>
@@ -40,6 +41,22 @@ const game = {
         </div>
       </div>
       
+      <div class="row" ng-if="false">
+        <div class="small-12 columns">
+          <p class="panel">
+            <ul>
+              <li class="visible-for-small-only">This text is shown only on a small screen.</li>
+              <!--<li class="visible-for-medium-up">This text is shown on medium screens and up.</li>-->
+              <li class="visible-for-medium-only">This text is shown only on a medium screen.</li>
+              <!--<li class="visible-for-large-up">This text is shown on large screens and up.</li>-->
+              <li class="visible-for-large-only">This text is shown only on a large screen.</li>
+              <!--<li class="visible-for-xlarge-up">This text is shown on xlarge screens and up.</li>-->
+              <li class="visible-for-xlarge-only">This text is shown only on an xlarge screen.</li>
+              <!--<li class="visible-for-xxlarge-up">This text is shown on xxlarge screens and up.</li>-->
+            </ul>
+          </p>
+        </div>
+      </div>
     </div>
 	`,
   
@@ -70,6 +87,7 @@ const game = {
         });
       });
       this.$document.on('keydown', this.keyDownHandler(this));
+      this.emptyBlock = null;
     }
     
     $onDestroy() {
@@ -97,6 +115,7 @@ const game = {
         });
       }
       
+      this.emptyBlock = this.tiles.find((tile) => tile.canvas === null);
       this.stat.startGame();
     }
     
@@ -127,13 +146,13 @@ const game = {
         }
       }
     }
-  
+    
     moveByClick(tile) {
       if (!this.stat.isGameRunning()) {
         return;
       }
       
-      let emptyBlock = this.tiles.find((tile) => tile.canvas === null);
+      let emptyBlock = this.emptyBlock;
       if (emptyBlock) {
         const XDistance = emptyBlock.position_x - tile.position_x;
         const YDistance = emptyBlock.position_y - tile.position_y;
@@ -146,12 +165,16 @@ const game = {
       }
     }
     
+    getTilePosition(tile) {
+      return `translate3d(${tile.position_x * this.tileSize}px, ${tile.position_y * this.tileSize}px, 0px)`;
+    }
+    
     moveByKeyPress(direction) {
       if (!this.stat.isGameRunning()) {
         return;
       }
       
-      let emptyBlock = this.tiles.find((tile) => tile.canvas === null);
+      let emptyBlock = this.emptyBlock;
       let target = {x: emptyBlock.position_x, y: emptyBlock.position_y};
       if (emptyBlock) {
         switch (direction) {
@@ -228,7 +251,6 @@ const game = {
       };
       let direction = getDirection($event.direction);
       if (direction) {
-        console.log($event);
         this.moveByKeyPress(direction);
       }
     }

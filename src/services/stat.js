@@ -15,8 +15,10 @@ export default class stat {
   startGame() {
     this.startingTime = +new Date();
     this.endingTime = +new Date();
+    //this.endingTime = 0;
     this.movesCount = 0;
     this.timerHandler = this.$interval(() => {
+      //this.endingTime++;
       this.endingTime = +new Date();
     }, 1000);
   }
@@ -27,6 +29,7 @@ export default class stat {
   
   getGameTime() {
     return Math.floor((this.endingTime - this.startingTime) / 1000);
+    //return this.endingTime;
   }
   
   isGameRunning() {
